@@ -12,6 +12,9 @@
  * dnc.c: simple nc-like tool intended for demonstrating network failure modes
  */
 
+#include <string.h>
+#include <time.h>
+#include <stdbool.h>
 #include <assert.h>
 #include <err.h>
 #include <errno.h>
@@ -29,6 +32,7 @@
 #include <netinet/tcp.h>
 #include <sys/socket.h>
 
+typedef enum { B_FALSE, B_TRUE } boolean_t;
 char *dnc_arg0;
 const char *dnc_usagefmt =
     "usage: %s [-n] -l -p LISTEN_PORT\n"
@@ -341,7 +345,7 @@ dnc_connection(dnc_t *dncp, int sock)
 			}
 
 			if (nwritten != nread) {
-				warnx("short write: expected %d, wrote %d",
+				warnx("short write: expected %zu, wrote %zu",
 				    nread, nwritten);
 				return (-1);
 			}
